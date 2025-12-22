@@ -142,12 +142,17 @@ body {
 }
 
 /* Card Styles */
+/* Card Styles */
 .card {
-    background-color: var(--card-bg);
+    background-color: rgba(0, 0, 0, 0.75);
+    /* Transparent Black */
+    backdrop-filter: blur(10px);
+    /* Glassmorphism effect */
+    -webkit-backdrop-filter: blur(10px);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(0, 0, 0, 0.02);
-    /* Extremely subtle border */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Subtle white border */
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     cursor: default;
     display: flex;
@@ -156,19 +161,22 @@ body {
 
 .card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-hover);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.85);
 }
 
 .card-header {
     padding: var(--spacing-lg);
-    border-bottom: 1px solid var(--bg-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: transparent;
+    /* Remove solid background */
 }
 
 .customer-name {
     font-size: 19px;
-    /* Specific size often found in iOS lists */
     font-weight: 600;
-    color: var(--text-primary);
+    color: #FFFFFF;
+    /* White text */
 }
 
 .card-body {
@@ -176,6 +184,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .info-group {
@@ -187,14 +196,16 @@ body {
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.5);
+    /* Muted light gray */
     margin-bottom: 4px;
     letter-spacing: 0.05em;
 }
 
 .value {
     font-size: 15px;
-    color: var(--text-primary);
+    color: #FFFFFF;
+    /* White for readability */
     font-weight: 400;
 }
 

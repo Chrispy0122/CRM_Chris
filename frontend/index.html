@@ -99,6 +99,43 @@
         </section>
     </main>
 
+    <!-- Modal Layout -->
+    <div class="modal-overlay" id="addCustomerModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">New Customer</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+
+            <form class="modal-form" id="customerForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" placeholder="Jane Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="jane@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="whatsapp">WhatsApp</label>
+                    <input type="tel" id="whatsapp" placeholder="+1 234 567 890" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="item">Item Purchased</label>
+                    <input type="text" id="item" placeholder="MacBook Pro 14'" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" id="cancelModal">Cancel</button>
+                    <button type="submit" class="btn-save">Save Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="java.js"></script>
 </body>
 

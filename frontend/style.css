@@ -77,6 +77,7 @@ body {
 }
 
 /* Add Button */
+/* Add Button */
 .btn-add-customer {
     background-color: #000000;
     /* Pure black as requested */
@@ -94,11 +95,43 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     /* Nice shadow */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    /* Essential for tooltip positioning */
+}
+
+/* Tooltip implementation */
+.btn-add-customer::after {
+    content: "Add New Client";
+    position: absolute;
+    /* Position to the left of the button */
+    right: 75px;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+
+    background-color: #1D1D1F;
+    color: #FFFFFF;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .btn-add-customer:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-add-customer:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
 }
 
 /* Grid Layout */

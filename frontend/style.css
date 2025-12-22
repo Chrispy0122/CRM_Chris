@@ -109,14 +109,15 @@ body {
 .search-icon {
     position: absolute;
     left: 16px;
-    color: rgba(0, 0, 0, 0.5);
-    /* Dark icon */
+    z-index: 10;
+    /* Ensure on top */
+    color: #000000;
+    /* Solid Black */
     pointer-events: none;
     transition: color 0.3s ease;
 }
 
-.search-input:focus+.search-icon,
-.search-input:focus~.search-icon {}
+/* Removed empty selector */
 
 /* Better icon focus handling: */
 .search-container:focus-within .search-icon {

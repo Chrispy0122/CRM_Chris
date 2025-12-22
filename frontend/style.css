@@ -241,23 +241,19 @@ body {
     visibility: visible;
 }
 
+/* Dark Glass Modal (Re-applied) */
 .modal-container {
-    background: rgba(255, 255, 255, 0.85);
-    /* White glass */
+    background: linear-gradient(145deg, rgba(40, 40, 40, 0.7) 0%, rgba(0, 0, 0, 0.6) 100%);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     width: 90%;
     max-width: 500px;
     border-radius: 20px;
     padding: 32px;
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transform: translateY(20px) scale(0.98);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.modal-overlay.active .modal-container {
-    transform: translateY(0) scale(1);
 }
 
 .modal-header {
@@ -265,8 +261,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    /* Light separator */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 16px;
 }
 
@@ -274,16 +269,15 @@ body {
     font-size: 24px;
     font-weight: 700;
     letter-spacing: -0.02em;
-    color: #1D1D1F;
-    /* Black Text */
+    color: #FFFFFF;
+    /* White Text */
 }
 
 .modal-close {
     background: none;
     border: none;
     font-size: 28px;
-    color: rgba(0, 0, 0, 0.4);
-    /* Muted black */
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
     line-height: 1;
     padding: 0;
@@ -291,7 +285,7 @@ body {
 }
 
 .modal-close:hover {
-    color: #000000;
+    color: #FFFFFF;
 }
 
 .modal-form .form-group {
@@ -303,7 +297,7 @@ body {
     font-size: 13px;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.7);
-    /* Light gray for dark bg */
+    /* Light gray usage */
     margin-bottom: 8px;
 }
 
@@ -313,7 +307,7 @@ body {
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background-color: rgba(0, 0, 0, 0.3);
-    /* Dark transparent input */
+    /* Dark input */
     font-size: 15px;
     color: #FFFFFF;
     font-family: inherit;
@@ -323,7 +317,6 @@ body {
 
 .modal-form input:focus {
     border-color: #FFFFFF;
-    /* High contrast focus */
     background-color: rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
 }

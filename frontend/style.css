@@ -242,12 +242,15 @@ body {
 }
 
 .modal-container {
-    background-color: var(--card-bg);
+    background: linear-gradient(145deg, rgba(40, 40, 40, 0.7) 0%, rgba(0, 0, 0, 0.6) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     width: 90%;
     max-width: 500px;
     border-radius: 20px;
     padding: 32px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transform: translateY(20px) scale(0.98);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -261,22 +264,33 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    /* Subtle separator */
+    padding-bottom: 16px;
 }
 
 .modal-title {
     font-size: 24px;
     font-weight: 700;
     letter-spacing: -0.02em;
+    color: #FFFFFF;
+    /* White Text */
 }
 
 .modal-close {
     background: none;
     border: none;
     font-size: 28px;
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.6);
+    /* Muted white */
     cursor: pointer;
     line-height: 1;
     padding: 0;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #FFFFFF;
 }
 
 .modal-form .form-group {
@@ -286,8 +300,9 @@ body {
 .modal-form label {
     display: block;
     font-size: 13px;
-    font-weight: 500;
-    color: var(--text-primary);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    /* Light gray for dark bg */
     margin-bottom: 8px;
 }
 
@@ -295,19 +310,25 @@ body {
     width: 100%;
     padding: 12px 16px;
     border-radius: 12px;
-    border: 1px solid var(--border-color);
-    background-color: var(--bg-color);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Dark transparent input */
     font-size: 15px;
-    color: var(--text-primary);
+    color: #FFFFFF;
     font-family: inherit;
-    transition: border-color 0.2s ease;
+    transition: all 0.2s ease;
     outline: none;
 }
 
 .modal-form input:focus {
-    border-color: #000000;
-    /* Black focus ring */
-    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+    /* High contrast focus */
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.modal-form input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
 }
 
 .modal-actions {

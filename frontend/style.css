@@ -217,18 +217,18 @@ body {
 }
 
 .btn-generate {
-    width: 100%;
-    margin-top: 16px;
-    padding: 8px 16px;
-    /* Smaller padding */
+    width: fit-content;
+    /* Fits text size */
+    margin-top: 12px;
+    padding: 6px 14px;
+    /* Compact padding */
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 50px;
-    /* Oval / Pill shape */
     color: #FFFFFF;
     font-family: inherit;
-    font-size: 12px;
-    /* Smaller text */
+    font-size: 11px;
+    /* Even smaller font */
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;

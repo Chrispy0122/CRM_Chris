@@ -408,6 +408,12 @@ body {
     color: var(--text-primary);
     letter-spacing: -0.03em;
     /* Tight professional tracking */
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.page-title:hover {
+    opacity: 0.7;
 }
 
 /* Add Button */

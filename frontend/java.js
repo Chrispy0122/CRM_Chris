@@ -44,29 +44,85 @@ document.addEventListener('DOMContentLoaded', () => {
         closeModal();
         form.reset();
     });
-    // Search Functionality
+    // --- SEARCH & FILTER LOGIC ---
     const searchInput = document.querySelector('.search-input');
     const cards = document.querySelectorAll('.card');
     const noResultsMsg = document.querySelector('.no-results');
+    const filterToggle = document.getElementById('filterToggle');
+    const filterMenu = document.getElementById('filterMenu');
+    const applyBtn = document.getElementById('applyFilters');
+    const clearBtn = document.getElementById('clearFilters');
 
-    // Helper to normalize strings (remove accents/diacritics)
-    const normalizeString = (str) => {
+    // State
+    let currentSearchTerm = '';
+    let currentFilters = {
+        category: '',
+        materials: [],
+        colors: [],
+        sizes: []
+    };
+
+    // Category Singularization Map
+    const categoryMap = {
+        'shirts': 'shirt',
+        'pants': 'pants', // Pants is usually plural in text too "Denim Pants"
+        'shorts': 'shorts',
+        'sweaters': 'sweater',
+        'dresses': 'dress',
+        'jackets': 'jacket'
+    };
+
+    // Normalization Helper
+    const normalize = (str) => {
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     };
 
-    searchInput.addEventListener('input', (e) => {
-        const searchString = normalizeString(e.target.value);
-        const searchTerms = searchString.split(/\s+/).filter(term => term.length > 0);
+    // Main Filter Function
+    const runFilters = () => {
         let visibleCount = 0;
 
         cards.forEach(card => {
-            const nameElement = card.querySelector('.customer-name');
-            const nameText = nameElement ? normalizeString(nameElement.textContent) : '';
+            const cardNameEl = card.querySelector('.customer-name');
+            const cardName = cardNameEl ? normalize(cardNameEl.textContent) : '';
+            const cardFullText = normalize(card.textContent);
 
-            // Check if ALL search terms are present in the name (Order independent)
-            const isMatch = searchTerms.every(term => nameText.includes(term));
+            let isMatch = true;
 
-            // "Apple-like" Smooth Filtering
+            // 1. Search Term (Name Match - Multi-word)
+            if (currentSearchTerm) {
+                const searchTerms = currentSearchTerm.split(/\s+/).filter(t => t.length > 0);
+                const nameMatch = searchTerms.every(term => cardName.includes(term));
+                if (!nameMatch) isMatch = false;
+            }
+
+            // 2. Category Filter
+            if (isMatch && currentFilters.category) {
+                const keyword = categoryMap[currentFilters.category] || currentFilters.category;
+                if (!cardFullText.includes(keyword)) isMatch = false;
+            }
+
+            // 3. Materials Filter (OR logic: if any selected, card must have at least one)
+            if (isMatch && currentFilters.materials.length > 0) {
+                const matMatch = currentFilters.materials.some(mat => cardFullText.includes(mat));
+                if (!matMatch) isMatch = false;
+            }
+
+            // 4. Colors Filter (OR logic)
+            if (isMatch && currentFilters.colors.length > 0) {
+                const colMatch = currentFilters.colors.some(col => cardFullText.includes(col));
+                if (!colMatch) isMatch = false;
+            }
+
+            // 5. Size Filter (OR logic) - currently strictly checks text
+            if (isMatch && currentFilters.sizes.length > 0) {
+                const sizeMatch = currentFilters.sizes.some(size => cardFullText.includes(" " + size + " "));
+                // Note: Spaces check to avoid matching "S" in "Silk"
+                // Since text doesn't have sizes yet, this will likely hide everything if used.
+                // For now, let's allow it to be strict.
+                if (!sizeMatch) isMatch = false;
+            }
+
+            // Toggle Visibility
             if (isMatch) {
                 card.classList.remove('hidden');
                 visibleCount++;
@@ -75,19 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Show/Hide Empty State
-        if (visibleCount === 0) {
-            noResultsMsg.style.display = 'block';
-        } else {
-            noResultsMsg.style.display = 'none';
-        }
+        // Empty State
+        noResultsMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
+    };
+
+    // Event: Search Input
+    searchInput.addEventListener('input', (e) => {
+        currentSearchTerm = normalize(e.target.value);
+        runFilters();
     });
 
-    // Filter UI Logic
-    const filterToggle = document.getElementById('filterToggle');
-    const filterMenu = document.getElementById('filterMenu');
-
-    // Toggle Menu
+    // Event: Toggle Filter Menu
     filterToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         const isExpanded = filterToggle.getAttribute('aria-expanded') === 'true';
@@ -96,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         filterMenu.classList.toggle('active');
     });
 
-    // Close when clicking outside
+    // Event: Close Menu Outside
     document.addEventListener('click', (e) => {
         if (!filterMenu.contains(e.target) && !filterToggle.contains(e.target)) {
             filterMenu.classList.remove('active');
@@ -105,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle Selection (Visual only for now)
+    // Event: Toggle Selection (Visual)
     const toggleSelection = (elements) => {
         elements.forEach(el => {
             el.addEventListener('click', () => {
@@ -113,16 +167,73 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     };
-
     toggleSelection(document.querySelectorAll('.size-btn'));
     toggleSelection(document.querySelectorAll('.chip-btn'));
     toggleSelection(document.querySelectorAll('.color-btn'));
 
-    // Clear Filters
-    document.getElementById('clearFilters').addEventListener('click', () => {
+    // Event: Apply Filters
+    applyBtn.addEventListener('click', () => {
+        // Harvest Data
+        const categoryVal = document.querySelector('.filter-select').value;
+        const sizeVals = Array.from(document.querySelectorAll('.size-btn.selected')).map(el => normalize(el.textContent));
+        const materialVals = Array.from(document.querySelectorAll('.chip-btn.selected')).map(el => normalize(el.textContent));
+        const colorVals = Array.from(document.querySelectorAll('.color-btn.selected')).map(el => normalize(el.getAttribute('aria-label')));
+
+        // Update State
+        currentFilters = {
+            category: categoryVal,
+            sizes: sizeVals,
+            materials: materialVals,
+            colors: colorVals
+        };
+
+        // Run
+        runFilters();
+
+        // Close Menu
+        filterMenu.classList.remove('active');
+        filterToggle.classList.remove('active');
+        filterToggle.setAttribute('aria-expanded', 'false');
+    });
+
+    // Event: Clear Filters
+    clearBtn.addEventListener('click', () => {
+        // Clear UI
         document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
-        const filterSelect = document.querySelector('.filter-select');
-        if (filterSelect) filterSelect.value = "";
+        document.querySelector('.filter-select').value = "";
+
+        // Clear State
+        currentFilters = {
+            category: '',
+            materials: [],
+            colors: [],
+            sizes: []
+        };
+
+        // Run
+        runFilters();
+    });
+
+    // Event: Click Title to Reset (Home)
+    document.querySelector('.page-title').addEventListener('click', () => {
+        // Clear Search
+        searchInput.value = '';
+        currentSearchTerm = '';
+
+        // Clear Filters UI
+        document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+        document.querySelector('.filter-select').value = "";
+
+        // Clear Filter State
+        currentFilters = {
+            category: '',
+            materials: [],
+            colors: [],
+            sizes: []
+        };
+
+        // Run to show all
+        runFilters();
     });
 
 });

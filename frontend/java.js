@@ -49,15 +49,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.card');
     const noResultsMsg = document.querySelector('.no-results');
 
+    // Helper to normalize strings (remove accents/diacritics)
+    const normalizeString = (str) => {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    };
+
     searchInput.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase().trim();
+        const searchString = normalizeString(e.target.value);
+        const searchTerms = searchString.split(/\s+/).filter(term => term.length > 0);
         let visibleCount = 0;
 
         cards.forEach(card => {
-            const cardContent = card.textContent.toLowerCase();
+            const nameElement = card.querySelector('.customer-name');
+            const nameText = nameElement ? normalizeString(nameElement.textContent) : '';
+
+            // Check if ALL search terms are present in the name (Order independent)
+            const isMatch = searchTerms.every(term => nameText.includes(term));
 
             // "Apple-like" Smooth Filtering
-            if (cardContent.includes(searchTerm)) {
+            if (isMatch) {
                 card.classList.remove('hidden');
                 visibleCount++;
             } else {
@@ -72,4 +82,47 @@ document.addEventListener('DOMContentLoaded', () => {
             noResultsMsg.style.display = 'none';
         }
     });
+
+    // Filter UI Logic
+    const filterToggle = document.getElementById('filterToggle');
+    const filterMenu = document.getElementById('filterMenu');
+
+    // Toggle Menu
+    filterToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isExpanded = filterToggle.getAttribute('aria-expanded') === 'true';
+        filterToggle.setAttribute('aria-expanded', !isExpanded);
+        filterToggle.classList.toggle('active');
+        filterMenu.classList.toggle('active');
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!filterMenu.contains(e.target) && !filterToggle.contains(e.target)) {
+            filterMenu.classList.remove('active');
+            filterToggle.classList.remove('active');
+            filterToggle.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    // Handle Selection (Visual only for now)
+    const toggleSelection = (elements) => {
+        elements.forEach(el => {
+            el.addEventListener('click', () => {
+                el.classList.toggle('selected');
+            });
+        });
+    };
+
+    toggleSelection(document.querySelectorAll('.size-btn'));
+    toggleSelection(document.querySelectorAll('.chip-btn'));
+    toggleSelection(document.querySelectorAll('.color-btn'));
+
+    // Clear Filters
+    document.getElementById('clearFilters').addEventListener('click', () => {
+        document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+        const filterSelect = document.querySelector('.filter-select');
+        if (filterSelect) filterSelect.value = "";
+    });
+
 });

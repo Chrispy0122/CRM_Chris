@@ -17,13 +17,93 @@
         <header class="page-header">
             <h1 class="page-title">Customers</h1>
 
+            <div class="filter-wrapper">
+                <button class="btn-filter" id="filterToggle" aria-label="Filter" aria-expanded="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="21" x2="4" y2="14"></line>
+                        <line x1="4" y1="10" x2="4" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12" y2="3"></line>
+                        <line x1="20" y1="21" x2="20" y2="16"></line>
+                        <line x1="20" y1="12" x2="20" y2="3"></line>
+                        <line x1="1" y1="14" x2="7" y2="14"></line>
+                        <line x1="9" y1="8" x2="15" y2="8"></line>
+                        <line x1="17" y1="16" x2="23" y2="16"></line>
+                    </svg>
+                    <span>Filters</span>
+                </button>
+
+                <!-- Filter Popover -->
+                <div class="filter-menu" id="filterMenu">
+                    <div class="filter-section">
+                        <label class="filter-label">Category</label>
+                        <select class="filter-select">
+                            <option value="">All Items</option>
+                            <option value="shirts">Shirts</option>
+                            <option value="pants">Pants</option>
+                            <option value="shorts">Shorts</option>
+                            <option value="sweaters">Sweaters</option>
+                            <option value="dresses">Dresses</option>
+                            <option value="jackets">Jackets</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-section">
+                        <label class="filter-label">Size</label>
+                        <div class="size-options">
+                            <button class="size-btn">S</button>
+                            <button class="size-btn">M</button>
+                            <button class="size-btn">L</button>
+                            <button class="size-btn">XL</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <label class="filter-label">Material</label>
+                        <div class="chip-options">
+                            <button class="chip-btn">Linen</button>
+                            <button class="chip-btn">Cotton</button>
+                            <button class="chip-btn">Silk</button>
+                            <button class="chip-btn">Denim</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <label class="filter-label">Color</label>
+                        <div class="color-options">
+                            <button class="color-btn black" aria-label="Black"></button>
+                            <button class="color-btn white" aria-label="White"></button>
+                            <button class="color-btn grey" aria-label="Grey"></button>
+                            <button class="color-btn beige" aria-label="Beige"></button>
+                            <button class="color-btn brown" aria-label="Brown"></button>
+                            <button class="color-btn navy" aria-label="Navy"></button>
+                            <button class="color-btn blue" aria-label="Blue"></button>
+                            <button class="color-btn teal" aria-label="Teal"></button>
+                            <button class="color-btn green" aria-label="Green"></button>
+                            <button class="color-btn yellow" aria-label="Yellow"></button>
+                            <button class="color-btn orange" aria-label="Orange"></button>
+                            <button class="color-btn red" aria-label="Red"></button>
+                            <button class="color-btn maroon" aria-label="Maroon"></button>
+                            <button class="color-btn purple" aria-label="Purple"></button>
+                            <button class="color-btn pink" aria-label="Pink"></button>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="btn-text" id="clearFilters">Clear</button>
+                        <button class="btn-primary-sm" id="applyFilters">Apply</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="search-container">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round" class="search-icon">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" class="search-input" placeholder="SEARCH">
+                <input type="text" class="search-input" placeholder="Search Clients">
             </div>
             <button class="btn-add-customer" aria-label="Add New Customer">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
@@ -47,7 +127,7 @@
                     </div>
                     <div class="info-group">
                         <span class="label">Last Purchase</span>
-                        <p class="value">Floral Summer Dress - $45.00</p>
+                        <p class="value">Red Silk Dress - $45.00</p>
                         <span class="date">Oct 24, 2023</span>
                     </div>
                     <button class="btn-generate">Generate a Thank You Message</button>
@@ -66,7 +146,7 @@
                     </div>
                     <div class="info-group">
                         <span class="label">Last Purchase</span>
-                        <p class="value">Slim Fit Denim Jeans - $59.99</p>
+                        <p class="value">Blue Denim Pants - $59.99</p>
                         <span class="date">Oct 22, 2023</span>
                     </div>
                     <button class="btn-generate">Generate a Thank You Message</button>
@@ -85,7 +165,7 @@
                     </div>
                     <div class="info-group">
                         <span class="label">Last Purchase</span>
-                        <p class="value">Leather Biker Jacket - $120.00</p>
+                        <p class="value">Black Cotton Jacket - $120.00</p>
                         <span class="date">Oct 20, 2023</span>
                     </div>
                     <button class="btn-generate">Generate a Thank You Message</button>
@@ -103,7 +183,7 @@
                     </div>
                     <div class="info-group">
                         <span class="label">Last Purchase</span>
-                        <p class="value">Cotton T-Shirt Pack (3) - $25.00</p>
+                        <p class="value">White Cotton Shirt - $25.00</p>
                         <span class="date">Oct 18, 2023</span>
                     </div>
                     <button class="btn-generate">Generate a Thank You Message</button>

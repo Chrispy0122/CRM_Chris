@@ -216,20 +216,23 @@ body {
     margin-top: 2px;
 }
 
-/* Glassmorphism Button */
+/* White Glass Button (High Contrast) */
 .btn-generate {
     width: fit-content;
     margin-top: 12px;
     padding: 6px 16px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.9);
+    /* Strong White Glass */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: 50px;
-    color: #FFFFFF;
+    color: #000000;
+    /* Black text */
     font-family: inherit;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
+    /* Bolder for black text */
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
@@ -238,8 +241,8 @@ body {
 }
 
 .btn-generate:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: #FFFFFF;
+    /* Pure white on hover */
     transform: translateY(-2px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }

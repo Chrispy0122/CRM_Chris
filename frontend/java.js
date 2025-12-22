@@ -45,3 +45,22 @@ document.addEventListener('DOMContentLoaded', () => {
         form.reset();
     });
 });
+
+// Search Functionality
+const searchInput = document.querySelector('.search-input');
+const cards = document.querySelectorAll('.card');
+
+searchInput.addEventListener('input', (e) => {
+    const searchTerm = e.target.value.toLowerCase().trim();
+
+    cards.forEach(card => {
+        const customerName = card.querySelector('.customer-name').textContent.toLowerCase();
+
+        if (customerName.includes(searchTerm)) {
+            card.style.display = 'flex'; // Show matching card
+        } else {
+            card.style.display = 'none'; // Hide non-matching card
+        }
+    });
+});
+});

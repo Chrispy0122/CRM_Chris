@@ -236,4 +236,46 @@ document.addEventListener('DOMContentLoaded', () => {
         runFilters();
     });
 
+    // Event: Image Upload System
+    document.querySelectorAll('.card-image-upload').forEach(wrapper => {
+        const input = wrapper.querySelector('.image-input');
+        const label = wrapper.querySelector('.upload-label');
+        const img = label.querySelector('.uploaded-image');
+        const plusIcon = label.querySelector('.plus-icon');
+        const removeBtn = wrapper.querySelector('.remove-image-btn');
+
+        // Handle File Select
+        input.addEventListener('change', function (e) {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    plusIcon.style.display = 'none';
+                    label.style.borderStyle = 'solid';
+                    if (removeBtn) removeBtn.style.display = 'flex';
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // Handle Remove
+        if (removeBtn) {
+            removeBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent label click
+                e.stopPropagation();
+
+                // Clear Preview
+                img.src = "";
+                img.style.display = 'none';
+                plusIcon.style.display = 'block';
+                label.style.borderStyle = 'dashed';
+                removeBtn.style.display = 'none';
+
+                // Clear Input
+                input.value = "";
+            });
+        }
+    });
+
 });

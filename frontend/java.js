@@ -44,23 +44,22 @@ document.addEventListener('DOMContentLoaded', () => {
         closeModal();
         form.reset();
     });
-});
+    // Search Functionality
+    const searchInput = document.querySelector('.search-input');
+    const cards = document.querySelectorAll('.card');
 
-// Search Functionality
-const searchInput = document.querySelector('.search-input');
-const cards = document.querySelectorAll('.card');
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase().trim();
 
-searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase().trim();
+        cards.forEach(card => {
+            const customerName = card.querySelector('.customer-name').textContent.toLowerCase();
 
-    cards.forEach(card => {
-        const customerName = card.querySelector('.customer-name').textContent.toLowerCase();
-
-        if (customerName.includes(searchTerm)) {
-            card.style.display = 'flex'; // Show matching card
-        } else {
-            card.style.display = 'none'; // Hide non-matching card
-        }
+            // "Apple-like" Smooth Filtering
+            if (customerName.includes(searchTerm)) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
     });
-});
 });

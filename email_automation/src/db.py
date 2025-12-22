@@ -58,3 +58,23 @@ def fetch_recipients(limit: Optional[int] = None) -> List[Recipient]:
         )
         for name, email in rows
     ]
+
+from sqlalchemy import create_engine
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+def get_engine():
+    url = os.getenv("MYSQL_URL")
+    if not url:
+        raise RuntimeError("MYSQL_URL no configurada")
+
+    if url.startswith("mysql://"):
+        url = url.replace("mysql://", "mysql+pymysql://", 1)
+
+    return create_engine(
+        url,
+        pool_pre_ping=True,
+        connect_args={"ssl": {"ssl": True}}
+    )

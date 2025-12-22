@@ -1,0 +1,103 @@
+import os
+from typing import List, Optional
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, ConfigDict
+from dotenv import load_dotenv
+from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, func
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, Session
+
+# Cargar variables de entorno
+load_dotenv()
+
+# --- Configuración de Base de Datos (Aiven MySQL) ---
+# Formato esperado: mysql+pymysql://usuario:password@host:port/nombre_bd
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    print("ADVERTENCIA: DATABASE_URL no está configurada. La base de datos no funcionará.")
+
+engine = create_engine(DATABASE_URL) if DATABASE_URL else None
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine) if engine else None
+Base = declarative_base()
+
+app = FastAPI(title="Canvas Mini-CRM Backend")
+
+# Configuración CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# --- Modelos SQLAlchemy (Base de Datos) ---
+class ClientModel(Base):
+    __tablename__ = "clients"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(255), index=True) # String length needed for MySQL index
+    phone = Column(String(50))
+    item_bought = Column(String(255))
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+# Crear tablas si no existen (Solo para desarrollo rápido, idealmente usar Alembic)
+if engine:
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        print(f"Error conectando a BD: {e}")
+
+# --- Dependencia de Base de Datos ---
+def get_db():
+    if not SessionLocal:
+        raise HTTPException(status_code=503, detail="Base de datos no configurada")
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+# --- Esquemas Pydantic (Validación de Datos) ---
+class ClientBase(BaseModel):
+    name: str
+    phone: str
+    item_bought: str
+    notes: Optional[str] = None
+
+class ClientCreate(ClientBase):
+    pass
+
+class ClientResponse(ClientBase):
+    id: int
+    created_at: Optional[str] = None # Simplificado para response
+
+    model_config = ConfigDict(from_attributes=True)
+
+# --- Endpoints ---
+
+@app.get("/")
+def read_root():
+    return {"message": "Canvas Mini-CRM Backend is running 🚀 (Aiven MySQL Edition)"}
+
+@app.get("/clients", response_model=List[ClientResponse])
+def get_clients(db: Session = Depends(get_db)):
+    try:
+        clients = db.query(ClientModel).order_by(ClientModel.created_at.desc()).all()
+        return clients
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error consultando BD: {str(e)}")
+
+@app.post("/clients", response_model=ClientResponse)
+def create_client(client: ClientCreate, db: Session = Depends(get_db)):
+    try:
+        db_client = ClientModel(**client.model_dump())
+        db.add(db_client)
+        db.commit()
+        db.refresh(db_client)
+        return db_client
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error guardando cliente: {str(e)}")

@@ -219,21 +219,26 @@ body {
 .btn-generate {
     width: 100%;
     margin-top: 16px;
-    padding: 12px;
+    padding: 8px 16px;
+    /* Smaller padding */
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
+    border-radius: 50px;
+    /* Oval / Pill shape */
     color: #FFFFFF;
     font-family: inherit;
-    font-size: 13px;
+    font-size: 12px;
+    /* Smaller text */
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     backdrop-filter: blur(4px);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .btn-generate:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.15);
     border-color: #FFFFFF;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

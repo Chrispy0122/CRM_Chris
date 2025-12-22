@@ -1,0 +1,953 @@
+:root {
+    /* Color Palette - Monochrome / Apple Minimalist */
+    --bg-color: #F5F5F7;
+    /* Classic Apple light gray background */
+    --card-bg: #FFFFFF;
+    --text-primary: #1D1D1F;
+    /* Apple's almost-black */
+    --text-secondary: #86868B;
+    /* Apple's secondary text gray */
+    --border-color: #D2D2D7;
+    /* Subtle border */
+
+    /* Spacing & Layout */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 40px;
+    --container-max-width: 1024px;
+    /* More contained for readability */
+
+    /* Shadows - Soft and diffused */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    --shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.06);
+
+    /* Border Radius */
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    /* Smooth corners */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    /* System font stack for that "Native App" feel */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    /* Tighten tracking slightly */
+}
+
+.container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+/* Header */
+.page-header {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: 0;
+    border: none;
+    /* Removed separator for cleaner look */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    /* Add gap for spacing */
+}
+
+/* Search Bar Styles */
+.filter-wrapper {
+    position: relative;
+    margin-left: auto;
+    /* Move the push to here */
+    display: flex;
+    align-items: center;
+}
+
+.btn-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: 44px;
+    /* Match Search Height approx */
+}
+
+.btn-filter:hover,
+.btn-filter.active {
+    background: #000000;
+    color: #FFFFFF;
+    border-color: #000000;
+}
+
+/* Filter Menu Popover */
+.filter-menu {
+    position: absolute;
+    top: 54px;
+    right: 0;
+    width: 300px;
+    background: rgba(255, 255, 255, 0.85);
+    /* Glass */
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    z-index: 100;
+
+    /* Animation States */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.98);
+    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-origin: top right;
+}
+
+.filter-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+}
+
+/* Select Style */
+.filter-select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    cursor: pointer;
+}
+
+/* Size Options: Circular Buttons */
+.size-options {
+    display: flex;
+    gap: 8px;
+}
+
+.size-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.size-btn:hover {
+    background: #FFFFFF;
+    border-color: rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+}
+
+.size-btn.selected {
+    background: #000000;
+    color: #FFFFFF;
+    border-color: #000000;
+}
+
+/* Material Chips */
+.chip-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.5);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chip-btn:hover {
+    background: #FFFFFF;
+}
+
+.chip-btn.selected {
+    background: #000000;
+    color: #FFFFFF;
+    border-color: #000000;
+}
+
+/* Color Options: Dots */
+.color-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.color-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    /* Ring for white */
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.color-btn:hover {
+    transform: scale(1.15);
+}
+
+.color-btn.selected {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #000000;
+    /* Selection Ring */
+}
+
+/* Colors */
+.color-btn.black {
+    background-color: #000000;
+}
+
+.color-btn.white {
+    background-color: #FFFFFF;
+}
+
+.color-btn.blue {
+    background-color: #007AFF;
+}
+
+.color-btn.brown {
+    background-color: #8B4513;
+}
+
+.color-btn.green {
+    background-color: #34C759;
+}
+
+.color-btn.red {
+    background-color: #FF3B30;
+}
+
+.color-btn.grey {
+    background-color: #808080;
+}
+
+.color-btn.beige {
+    background-color: #F5F5DC;
+}
+
+.color-btn.navy {
+    background-color: #000080;
+}
+
+.color-btn.teal {
+    background-color: #008080;
+}
+
+.color-btn.yellow {
+    background-color: #FFD700;
+}
+
+.color-btn.orange {
+    background-color: #FFA500;
+}
+
+.color-btn.maroon {
+    background-color: #800000;
+}
+
+.color-btn.purple {
+    background-color: #800080;
+}
+
+.color-btn.pink {
+    background-color: #FFC0CB;
+}
+
+.filter-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-text:hover {
+    color: var(--text-primary);
+}
+
+.btn-primary-sm {
+    background: #000000;
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Search Container Adjustment */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+    /* Gap between filter and search */
+    margin-right: 16px;
+    width: 320px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 20px 12px 48px;
+    background: rgba(0, 0, 0, 0.2);
+    /* Much darker for visibility */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 50px;
+    color: #1D1D1F;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: none;
+}
+
+.search-input:focus {
+    background: rgba(0, 0, 0, 0.25);
+    /* Darker on focus */
+    border-color: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-input::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    z-index: 10;
+    /* Ensure on top */
+    color: #000000;
+    /* Solid Black */
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+/* Removed empty selector */
+
+/* Better icon focus handling: */
+.search-container:focus-within .search-icon {
+    color: #000000;
+}
+
+.page-title {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Explicit professional font */
+    font-size: 42px;
+    /* Larger as requested */
+    font-weight: 800;
+    /* Bolder */
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    /* Tight professional tracking */
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.page-title:hover {
+    opacity: 0.7;
+}
+
+/* Add Button */
+/* Add Button */
+.btn-add-customer {
+    background-color: #000000;
+    /* Pure black as requested */
+    color: #FFFFFF;
+    border: none;
+    width: 60px;
+    /* Fixed dimensions for perfect circle */
+    height: 60px;
+    border-radius: 50%;
+    /* Makes it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    /* Nice shadow */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    /* Essential for tooltip positioning */
+}
+
+/* Tooltip implementation */
+.btn-add-customer::after {
+    content: "Add New Client";
+    position: absolute;
+    /* Position to the left of the button */
+    right: 75px;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+
+    background-color: #1D1D1F;
+    color: #FFFFFF;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-add-customer:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-add-customer:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
+}
+
+/* Grid Layout */
+.customers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* Card Styles */
+/* Card Styles */
+.card {
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Semi-transparent black for frosting */
+    backdrop-filter: blur(16px) saturate(180%);
+    /* Strong blur + vibrance for true glass effect */
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Glass edge */
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    /* Animation Props */
+    opacity: 1;
+    transform: scale(1);
+    max-height: 500px;
+    /* Arbitrary large height to allow collapse */
+    overflow: hidden;
+    /* Needed for collapse */
+}
+
+/* Hidden state for Search Filtering */
+.card.hidden {
+    opacity: 0;
+    transform: scale(0.9);
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    pointer-events: none;
+    position: absolute;
+    /* Remove from flow completely to let grid rearrange? 
+                           No, absolute breaks grid gap. 
+                           Use display: none after timeout? 
+                           Or just collapsing max-height usually works for lists. 
+                           For GRID, collapsing width/height creates weird gaps. 
+                           The best "Grid" filter is usually `display: none`.
+                           
+                           User wants "Reacomoden solas" (Rearrange themselves).
+                           If I use display: none, it jumps.
+                           If I use max-width/height logic on a GRID item the columns dont always snap perfectly.
+                           
+                           Let's try the modern CSS Grid cleaner way: 
+                           Animate opacity out, then use JS to set display none? 
+                           Or simply use `display: none` but inside the transition logic? 
+                           Wait, `display` is not animatable.
+                           
+                           Actually, for a robust "Apple" grid filter without a library like Isotope/Framer:
+                           1. Fade out non-matches (opacity 0).
+                           2. Collapse them (but CSS Grid cells are rigid).
+                           
+                           Revised Strategy for GRID:
+                           We CANNOT animate the grid rearrangement purely with CSS transitions on the elements themselves seamlessly without a "jump" at the end.
+                           HOWEVER, `display: none` IS the only way to make the grid refill the empty slots correctly.
+                           The "jump" user complains about is likely the *instant* disappearance.
+                           So: Fade Out (0.3s) -> THEN `display: none` (JS Timeout).
+                           
+                           But since I only control CSS/JS here in one-shot edits, I'll update JS to wait.
+                           Wait... I just updated JS to toggle class.
+                           
+                           Let's assume standard "collapse" works best. 
+                           If I set `display: none` via `.hidden`, it overrides everything.
+                           
+                           Let's explicitly use `display: none` in `.hidden` BUT give it a delay? No.
+                           
+                           Let's Stick to:
+                           .card.hidden { display: none; }
+                           But animate BEFORE adding the class? 
+                           
+                           Okay, I will revert to the "Collapse" strategy. Even in Grid, if an item has 0 dimensions, the grid *should* collapse around it, albeit sometimes janky.
+                           But actually, `display: none` is the standard for filtering.
+                           
+                           Let's try to simulate the "fade".
+*/
+    display: none;
+    /* Just simple hiding for now, if user insists on animation I need JS timeout complexity */
+}
+
+/* Wait, user specifically asked for NO JUMP. */
+/* Re-doing the JS to handle animation is better. */
+/* But I already updated JS to just toggle class. */
+/* If I set .hidden { display: none }, it's instant. */
+
+/* LET'S TRY: 
+   .card.hidden {
+      opacity: 0;
+      pointer-events: none;
+      width: 0; 
+      height: 0;
+      margin: 0; 
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+   }
+*/
+.card.hidden {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    /* Collapse the space */
+    max-height: 0;
+    max-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    /* This forces the grid to release the space */
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Darken slightly on hover */
+}
+
+
+.card-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: transparent;
+    /* Remove solid background */
+}
+
+.customer-name {
+    font-size: 19px;
+    font-weight: 600;
+    color: #FFFFFF;
+    /* White text */
+}
+
+.card-body {
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+<<<<<<< HEAD
+=======
+.card-content-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+}
+
+/* Image Upload Circle */
+.card-image-upload {
+    flex-shrink: 0;
+    position: relative;
+}
+
+.remove-image-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 59, 48, 0.9);
+    /* Red */
+    color: white;
+    border: none;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    transition: transform 0.2s ease;
+}
+
+.remove-image-btn:hover {
+    transform: scale(1.1);
+    background: rgb(255, 59, 48);
+}
+
+.image-input {
+    display: none;
+}
+
+.upload-label {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: blur(4px);
+}
+
+.upload-label:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.plus-icon {
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+}
+
+.uploaded-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    z-index: 5;
+}
+
+>>>>>>> 274a015c6e8bffee8e53e432e6eb4f2b472b87f6
+.info-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    /* Muted light gray */
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+}
+
+.value {
+    font-size: 15px;
+    color: #FFFFFF;
+    /* White for readability */
+    font-weight: 400;
+}
+
+.date {
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+/* White Glass Button (High Contrast) */
+.btn-generate {
+    width: fit-content;
+    margin-top: 12px;
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.9);
+    /* Strong White Glass */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50px;
+    color: #000000;
+    /* Black text */
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    /* Bolder for black text */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-generate:hover {
+    background: #FFFFFF;
+    /* Pure white on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* No Results Message */
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-secondary);
+    font-size: 28px;
+    /* Significantly larger */
+    font-weight: 600;
+    width: 100%;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* White Glass Modal (Restored) */
+.modal-container {
+    background: rgba(255, 255, 255, 0.85);
+    /* White glass */
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    width: 90%;
+    max-width: 500px;
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transform: translateY(20px) scale(0.98);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    /* Light separator */
+    padding-bottom: 16px;
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #1D1D1F;
+    /* Black Text */
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: rgba(0, 0, 0, 0.4);
+    /* Muted black */
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #000000;
+}
+
+.modal-form .form-group {
+    margin-bottom: 20px;
+}
+
+.modal-form label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    /* Bolder */
+    color: #000000;
+    /* Pure Black for maximum darkness */
+    margin-bottom: 8px;
+}
+
+.modal-form input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: #F5F5F7;
+    /* Light gray input */
+    font-size: 15px;
+    color: #1D1D1F;
+    /* Black text */
+    font-family: inherit;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.modal-form input:focus {
+    border-color: #000000;
+    /* Black focus border */
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.modal-form input::placeholder {
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.btn-cancel,
+.btn-save {
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+}
+
+.btn-cancel:hover {
+    color: var(--text-primary);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-save {
+    background-color: #000000;
+    color: white;
+    border: none;
+}
+
+.btn-save:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

@@ -213,10 +213,104 @@ body {
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
     /* Glass edge */
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     cursor: default;
     display: flex;
     flex-direction: column;
+    /* Animation Props */
+    opacity: 1;
+    transform: scale(1);
+    max-height: 500px;
+    /* Arbitrary large height to allow collapse */
+    overflow: hidden;
+    /* Needed for collapse */
+}
+
+/* Hidden state for Search Filtering */
+.card.hidden {
+    opacity: 0;
+    transform: scale(0.9);
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    pointer-events: none;
+    position: absolute;
+    /* Remove from flow completely to let grid rearrange? 
+                           No, absolute breaks grid gap. 
+                           Use display: none after timeout? 
+                           Or just collapsing max-height usually works for lists. 
+                           For GRID, collapsing width/height creates weird gaps. 
+                           The best "Grid" filter is usually `display: none`.
+                           
+                           User wants "Reacomoden solas" (Rearrange themselves).
+                           If I use display: none, it jumps.
+                           If I use max-width/height logic on a GRID item the columns dont always snap perfectly.
+                           
+                           Let's try the modern CSS Grid cleaner way: 
+                           Animate opacity out, then use JS to set display none? 
+                           Or simply use `display: none` but inside the transition logic? 
+                           Wait, `display` is not animatable.
+                           
+                           Actually, for a robust "Apple" grid filter without a library like Isotope/Framer:
+                           1. Fade out non-matches (opacity 0).
+                           2. Collapse them (but CSS Grid cells are rigid).
+                           
+                           Revised Strategy for GRID:
+                           We CANNOT animate the grid rearrangement purely with CSS transitions on the elements themselves seamlessly without a "jump" at the end.
+                           HOWEVER, `display: none` IS the only way to make the grid refill the empty slots correctly.
+                           The "jump" user complains about is likely the *instant* disappearance.
+                           So: Fade Out (0.3s) -> THEN `display: none` (JS Timeout).
+                           
+                           But since I only control CSS/JS here in one-shot edits, I'll update JS to wait.
+                           Wait... I just updated JS to toggle class.
+                           
+                           Let's assume standard "collapse" works best. 
+                           If I set `display: none` via `.hidden`, it overrides everything.
+                           
+                           Let's explicitly use `display: none` in `.hidden` BUT give it a delay? No.
+                           
+                           Let's Stick to:
+                           .card.hidden { display: none; }
+                           But animate BEFORE adding the class? 
+                           
+                           Okay, I will revert to the "Collapse" strategy. Even in Grid, if an item has 0 dimensions, the grid *should* collapse around it, albeit sometimes janky.
+                           But actually, `display: none` is the standard for filtering.
+                           
+                           Let's try to simulate the "fade".
+*/
+    display: none;
+    /* Just simple hiding for now, if user insists on animation I need JS timeout complexity */
+}
+
+/* Wait, user specifically asked for NO JUMP. */
+/* Re-doing the JS to handle animation is better. */
+/* But I already updated JS to just toggle class. */
+/* If I set .hidden { display: none }, it's instant. */
+
+/* LET'S TRY: 
+   .card.hidden {
+      opacity: 0;
+      pointer-events: none;
+      width: 0; 
+      height: 0;
+      margin: 0; 
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+   }
+*/
+.card.hidden {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    /* Collapse the space */
+    max-height: 0;
+    max-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    /* This forces the grid to release the space */
 }
 
 .card:hover {

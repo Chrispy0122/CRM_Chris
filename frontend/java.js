@@ -1,0 +1,47 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const addBtn = document.querySelector('.btn-add-customer');
+    const modal = document.getElementById('addCustomerModal');
+    const closeBtn = document.getElementById('closeModal');
+    const cancelBtn = document.getElementById('cancelModal');
+    const form = document.getElementById('customerForm');
+
+    // Open Modal
+    addBtn.addEventListener('click', () => {
+        modal.classList.add('active');
+        // Focus first input for accessibility
+        setTimeout(() => document.getElementById('name').focus(), 100);
+    });
+
+    // Close Modal Function
+    const closeModal = () => {
+        modal.classList.remove('active');
+    };
+
+    // Close Event Listeners
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+
+    // Close when clicking outside the modal
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Handle Form Submit
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        // Here you would gather data and potentially send it to a backend
+        // For now, we'll just log it and close
+        console.log('Customer Added');
+        closeModal();
+        form.reset();
+    });
+});

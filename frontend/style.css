@@ -1,0 +1,172 @@
+:root {
+    /* Color Palette - Monochrome / Apple Minimalist */
+    --bg-color: #F5F5F7;
+    /* Classic Apple light gray background */
+    --card-bg: #FFFFFF;
+    --text-primary: #1D1D1F;
+    /* Apple's almost-black */
+    --text-secondary: #86868B;
+    /* Apple's secondary text gray */
+    --border-color: #D2D2D7;
+    /* Subtle border */
+
+    /* Spacing & Layout */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 40px;
+    --container-max-width: 1024px;
+    /* More contained for readability */
+
+    /* Shadows - Soft and diffused */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    --shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.06);
+
+    /* Border Radius */
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    /* Smooth corners */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    /* System font stack for that "Native App" feel */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    /* Tighten tracking slightly */
+}
+
+.container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+/* Header */
+.page-header {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: 0;
+    border: none;
+    /* Removed separator for cleaner look */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.page-title {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Explicit professional font */
+    font-size: 42px;
+    /* Larger as requested */
+    font-weight: 800;
+    /* Bolder */
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    /* Tight professional tracking */
+}
+
+/* Add Button */
+.btn-add-customer {
+    background-color: #000000;
+    /* Pure black as requested */
+    color: #FFFFFF;
+    border: none;
+    width: 60px;
+    /* Fixed dimensions for perfect circle */
+    height: 60px;
+    border-radius: 50%;
+    /* Makes it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    /* Nice shadow */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-add-customer:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Grid Layout */
+.customers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* Card Styles */
+.card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    /* Extremely subtle border */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+.card-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--bg-color);
+}
+
+.customer-name {
+    font-size: 19px;
+    /* Specific size often found in iOS lists */
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.card-body {
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.info-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+}
+
+.value {
+    font-size: 15px;
+    color: var(--text-primary);
+    font-weight: 400;
+}
+
+.date {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}

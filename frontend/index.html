@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM - Customers</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <main class="container">
+        <header class="page-header">
+            <h1 class="page-title">Customers</h1>
+            <button class="btn-add-customer" aria-label="Add New Customer">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </button>
+        </header>
+
+        <section class="customers-grid">
+            <!-- Mock Card 1 -->
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="customer-name">Ana García</h2>
+                </div>
+                <div class="card-body">
+                    <div class="info-group">
+                        <span class="label">Phone</span>
+                        <p class="value">+52 55 1234 5678</p>
+                    </div>
+                    <div class="info-group">
+                        <span class="label">Last Purchase</span>
+                        <p class="value">MacBook Pro M2 - $1,299</p>
+                        <span class="date">Oct 24, 2023</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Mock Card 2 -->
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="customer-name">Carlos Rodríguez</h2>
+                </div>
+                <div class="card-body">
+                    <div class="info-group">
+                        <span class="label">Phone</span>
+                        <p class="value">+52 81 8765 4321</p>
+                    </div>
+                    <div class="info-group">
+                        <span class="label">Last Purchase</span>
+                        <p class="value">iPhone 15 Pro - $999</p>
+                        <span class="date">Oct 22, 2023</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Mock Card 3 -->
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="customer-name">María López</h2>
+                </div>
+                <div class="card-body">
+                    <div class="info-group">
+                        <span class="label">Phone</span>
+                        <p class="value">+52 33 1122 3344</p>
+                    </div>
+                    <div class="info-group">
+                        <span class="label">Last Purchase</span>
+                        <p class="value">AirPods Max - $549</p>
+                        <span class="date">Oct 20, 2023</span>
+                    </div>
+                </div>
+            </article>
+            <!-- Mock Card 4 -->
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="customer-name">Jorge Martinez</h2>
+                </div>
+                <div class="card-body">
+                    <div class="info-group">
+                        <span class="label">Phone</span>
+                        <p class="value">+52 33 1252 3312</p>
+                    </div>
+                    <div class="info-group">
+                        <span class="label">Last Purchase</span>
+                        <p class="value">Ipad Pro - $809</p>
+                        <span class="date">Oct 12, 2023</span>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <script src="java.js"></script>
+</body>
+
+</html>

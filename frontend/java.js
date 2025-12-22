@@ -52,10 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchTerm = e.target.value.toLowerCase().trim();
 
         cards.forEach(card => {
-            const customerName = card.querySelector('.customer-name').textContent.toLowerCase();
+            const cardContent = card.textContent.toLowerCase();
 
             // "Apple-like" Smooth Filtering
-            if (customerName.includes(searchTerm)) {
+            if (cardContent.includes(searchTerm)) {
                 card.classList.remove('hidden');
             } else {
                 card.classList.add('hidden');

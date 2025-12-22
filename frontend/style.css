@@ -144,15 +144,15 @@ body {
 /* Card Styles */
 /* Card Styles */
 .card {
-    background-color: rgba(0, 0, 0, 0.75);
-    /* Transparent Black */
-    backdrop-filter: blur(10px);
-    /* Glassmorphism effect */
-    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Semi-transparent black for frosting */
+    backdrop-filter: blur(16px) saturate(180%);
+    /* Strong blur + vibrance for true glass effect */
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
     border-radius: var(--radius-lg);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    /* Subtle white border */
+    /* Glass edge */
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     cursor: default;
     display: flex;
@@ -162,8 +162,10 @@ body {
 .card:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Darken slightly on hover */
 }
+
 
 .card-header {
     padding: var(--spacing-lg);

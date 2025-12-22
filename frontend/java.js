@@ -4,6 +4,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('closeModal');
     const cancelBtn = document.getElementById('cancelModal');
     const form = document.getElementById('customerForm');
+<<<<<<< HEAD
+=======
+    const grid = document.querySelector('.customers-grid');
+
+    // --- HELPER: Bind Image Upload Events (Reusable) ---
+    const bindImageEvents = (wrapper) => {
+        const input = wrapper.querySelector('.image-input');
+        const label = wrapper.querySelector('.upload-label');
+        const img = label.querySelector('.uploaded-image');
+        const plusIcon = label.querySelector('.plus-icon');
+        const removeBtn = wrapper.querySelector('.remove-image-btn');
+
+        // Handle File Select
+        input.addEventListener('change', function (e) {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    plusIcon.style.display = 'none';
+                    label.style.borderStyle = 'solid';
+                    if (removeBtn) removeBtn.style.display = 'flex';
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // Handle Remove
+        if (removeBtn) {
+            removeBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent label click
+                e.stopPropagation();
+
+                // Clear Preview
+                img.src = "";
+                img.style.display = 'none';
+                plusIcon.style.display = 'block';
+                label.style.borderStyle = 'dashed';
+                removeBtn.style.display = 'none';
+
+                // Clear Input
+                input.value = "";
+            });
+        }
+    };
+>>>>>>> 274a015c6e8bffee8e53e432e6eb4f2b472b87f6
 
     // Open Modal
     addBtn.addEventListener('click', () => {
@@ -38,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle Form Submit
     form.addEventListener('submit', (e) => {
         e.preventDefault();
+<<<<<<< HEAD
         // Here you would gather data and potentially send it to a backend
         // For now, we'll just log it and close
         console.log('Customer Added');
@@ -47,6 +94,78 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- SEARCH & FILTER LOGIC ---
     const searchInput = document.querySelector('.search-input');
     const cards = document.querySelectorAll('.card');
+=======
+
+        // Get Values
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('whatsapp').value;
+        const item = document.getElementById('item').value;
+        const email = document.getElementById('email').value;
+
+        // Format Date (e.g., "Oct 24, 2023")
+        const dateObj = new Date();
+        const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+        // Unique ID for Upload
+        const uniqueId = 'upload-' + Date.now();
+
+        // Create HTML string
+        const cardHTML = `
+            <div class="card-header">
+                <h2 class="customer-name">${name}</h2>
+            </div>
+            <div class="card-body">
+                <div class="card-content-row">
+                    <div class="card-info">
+                        <div class="info-group">
+                            <span class="label">Phone</span>
+                            <p class="value">${phone}</p>
+                        </div>
+                        <div class="info-group">
+                            <span class="label">Email</span>
+                            <p class="value">${email}</p>
+                        </div>
+                        <div class="info-group">
+                            <span class="label">Last Purchase</span>
+                            <p class="value">${item}</p>
+                            <span class="date">${dateStr}</span>
+                        </div>
+                    </div>
+                    <div class="card-image-upload">
+                            <input type="file" id="${uniqueId}" class="image-input" accept="image/*">
+                            <label for="${uniqueId}" class="upload-label" aria-label="Upload Image">
+                            <span class="plus-icon">+</span>
+                            <img src="" alt="" class="uploaded-image" style="display: none;">
+                            </label>
+                            <button type="button" class="remove-image-btn" style="display: none;" aria-label="Remove Image">&times;</button>
+                    </div>
+                </div>
+                <button class="btn-generate">Generate a Thank You Message</button>
+            </div>
+        `;
+
+        // Create Element
+        const newCard = document.createElement('article');
+        newCard.className = 'card';
+        newCard.innerHTML = cardHTML;
+
+        // Append to Grid (Before the empty state)
+        grid.insertBefore(newCard, document.querySelector('.no-results'));
+
+        // Bind Image Events for the new card
+        bindImageEvents(newCard.querySelector('.card-image-upload'));
+
+        // Close & Reset
+        closeModal();
+        form.reset();
+
+        // Run filters
+        runFilters();
+    });
+    // --- SEARCH & FILTER LOGIC ---
+    const searchInput = document.querySelector('.search-input');
+    // const cards = document.querySelectorAll('.card');
+>>>>>>> 274a015c6e8bffee8e53e432e6eb4f2b472b87f6
     const noResultsMsg = document.querySelector('.no-results');
     const filterToggle = document.getElementById('filterToggle');
     const filterMenu = document.getElementById('filterMenu');
@@ -80,6 +199,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Main Filter Function
     const runFilters = () => {
         let visibleCount = 0;
+<<<<<<< HEAD
+=======
+        const cards = document.querySelectorAll('.card');
+>>>>>>> 274a015c6e8bffee8e53e432e6eb4f2b472b87f6
 
         cards.forEach(card => {
             const cardNameEl = card.querySelector('.customer-name');
@@ -236,4 +359,10 @@ document.addEventListener('DOMContentLoaded', () => {
         runFilters();
     });
 
+<<<<<<< HEAD
+=======
+    // Initialize Image Upload Events for existing cards
+    document.querySelectorAll('.card-image-upload').forEach(wrapper => bindImageEvents(wrapper));
+
+>>>>>>> 274a015c6e8bffee8e53e432e6eb4f2b472b87f6
 });

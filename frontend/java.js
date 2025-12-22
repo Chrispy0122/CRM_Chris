@@ -47,9 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Search Functionality
     const searchInput = document.querySelector('.search-input');
     const cards = document.querySelectorAll('.card');
+    const noResultsMsg = document.querySelector('.no-results');
 
     searchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase().trim();
+        let visibleCount = 0;
 
         cards.forEach(card => {
             const cardContent = card.textContent.toLowerCase();
@@ -57,9 +59,17 @@ document.addEventListener('DOMContentLoaded', () => {
             // "Apple-like" Smooth Filtering
             if (cardContent.includes(searchTerm)) {
                 card.classList.remove('hidden');
+                visibleCount++;
             } else {
                 card.classList.add('hidden');
             }
         });
+
+        // Show/Hide Empty State
+        if (visibleCount === 0) {
+            noResultsMsg.style.display = 'block';
+        } else {
+            noResultsMsg.style.display = 'none';
+        }
     });
 });

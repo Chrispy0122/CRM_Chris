@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('closeModal');
     const cancelBtn = document.getElementById('cancelModal');
     const form = document.getElementById('customerForm');
-<<<<<<< HEAD
-=======
     const grid = document.querySelector('.customers-grid');
 
     // --- HELPER: Bind Image Upload Events (Reusable) ---
@@ -49,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     };
->>>>>>> 274a015c6e8bffee8e53e432e6eb4f2b472b87f6
 
     // Open Modal
     addBtn.addEventListener('click', () => {
@@ -84,18 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle Form Submit
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-<<<<<<< HEAD
-        // Here you would gather data and potentially send it to a backend
-        // For now, we'll just log it and close
-        console.log('Customer Added');
-        closeModal();
-        form.reset();
-    });
-    // --- SEARCH & FILTER LOGIC ---
-    const searchInput = document.querySelector('.search-input');
-    const cards = document.querySelectorAll('.card');
-=======
-
         // Get Values
         const name = document.getElementById('name').value;
         const phone = document.getElementById('whatsapp').value;
@@ -165,7 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- SEARCH & FILTER LOGIC ---
     const searchInput = document.querySelector('.search-input');
     // const cards = document.querySelectorAll('.card');
->>>>>>> 274a015c6e8bffee8e53e432e6eb4f2b472b87f6
     const noResultsMsg = document.querySelector('.no-results');
     const filterToggle = document.getElementById('filterToggle');
     const filterMenu = document.getElementById('filterMenu');
@@ -199,10 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Main Filter Function
     const runFilters = () => {
         let visibleCount = 0;
-<<<<<<< HEAD
-=======
         const cards = document.querySelectorAll('.card');
->>>>>>> 274a015c6e8bffee8e53e432e6eb4f2b472b87f6
 
         cards.forEach(card => {
             const cardNameEl = card.querySelector('.customer-name');
@@ -359,10 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
         runFilters();
     });
 
-<<<<<<< HEAD
-=======
     // Initialize Image Upload Events for existing cards
     document.querySelectorAll('.card-image-upload').forEach(wrapper => bindImageEvents(wrapper));
-
->>>>>>> 274a015c6e8bffee8e53e432e6eb4f2b472b87f6
 });

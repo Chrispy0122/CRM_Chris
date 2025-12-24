@@ -623,8 +623,6 @@ body {
     color: rgba(255, 255, 255, 0.8);
 }
 
-<<<<<<< HEAD
-=======
 .card-content-row {
     display: flex;
     justify-content: space-between;
@@ -715,7 +713,6 @@ body {
     z-index: 5;
 }
 
->>>>>>> 274a015c6e8bffee8e53e432e6eb4f2b472b87f6
 .info-group {
     display: flex;
     flex-direction: column;

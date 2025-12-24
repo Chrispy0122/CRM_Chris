@@ -15,7 +15,8 @@ document.addEventListener("click", async (e) => {
   btn.textContent = "Sending...";
 
   try {
-    const response = await fetch("/api/send-thankyou", {
+    const response = await fetch("http://localhost:8000/api/send-thankyou", {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json"

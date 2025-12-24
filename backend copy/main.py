@@ -37,11 +37,13 @@ class ClientModel(Base):
     __tablename__ = "clients"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), index=True) # String length needed for MySQL index
+    name = Column(String(255), index=True)
     phone = Column(String(50))
+    email = Column(String(255), index=True)  # <-- AGREGA ESTO
     item_bought = Column(String(255))
     notes = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
 
 # Crear tablas si no existen (Solo para desarrollo rápido, idealmente usar Alembic)
 if engine:
@@ -64,8 +66,10 @@ def get_db():
 class ClientBase(BaseModel):
     name: str
     phone: str
+    email: str          # <-- AGREGA ESTO
     item_bought: str
     notes: Optional[str] = None
+
 
 class ClientCreate(ClientBase):
     pass
@@ -101,3 +105,27 @@ def create_client(client: ClientCreate, db: Session = Depends(get_db)):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error guardando cliente: {str(e)}")
+
+
+class SendThankYouRequest(BaseModel):
+    id_clients: int
+
+@app.post("/api/send-thankyou")
+def send_thankyou(payload: SendThankYouRequest, db: Session = Depends(get_db)):
+
+    client = db.query(ClientModel).filter(ClientModel.id == payload.id_clients).first()
+    if not client:
+        raise HTTPException(status_code=404, detail="Cliente no encontrado")
+
+    if not client.email:
+        raise HTTPException(status_code=400, detail="El cliente no tiene email guardado")
+
+    # IMPORTANTE: esto asume que tienes esos módulos en tu proyecto (como en pipeline.py)
+    from email_automation.src.gmail_sender import send_email
+    from email_automation.src.templates import thank_you_template
+
+    subject, text, html = thank_you_template(client.name)
+
+    send_email(client.email, subject, text, html)
+
+    return {"status": "sent", "to": client.email}

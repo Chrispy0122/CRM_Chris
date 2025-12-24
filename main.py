@@ -33,16 +33,17 @@ app.add_middleware(
 )
 
 # --- Modelos SQLAlchemy (Base de Datos) ---
+# --- Modelos SQLAlchemy (Base de Datos) ---
 class ClientModel(Base):
     __tablename__ = "clients"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id_clients = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), index=True)
-    phone = Column(String(50))
-    email = Column(String(255), index=True)  # <-- AGREGA ESTO
-    item_bought = Column(String(255))
-    notes = Column(Text, nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    phone_number = Column(String(50))
+    email = Column(String(255), index=True)
+    purchased_item = Column(String(255))
+    note = Column(Text, nullable=True)
+    # created_at no existe en la BD actual
 
 
 # Crear tablas si no existen (Solo para desarrollo rápido, idealmente usar Alembic)
@@ -65,18 +66,18 @@ def get_db():
 # --- Esquemas Pydantic (Validación de Datos) ---
 class ClientBase(BaseModel):
     name: str
-    phone: str
-    email: str          # <-- AGREGA ESTO
-    item_bought: str
-    notes: Optional[str] = None
+    phone_number: str
+    email: str
+    purchased_item: str
+    note: Optional[str] = None
 
 
 class ClientCreate(ClientBase):
     pass
 
 class ClientResponse(ClientBase):
-    id: int
-    created_at: Optional[str] = None # Simplificado para response
+    id_clients: int
+    # created_at eliminado
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -89,9 +90,11 @@ def read_root():
 @app.get("/clients", response_model=List[ClientResponse])
 def get_clients(db: Session = Depends(get_db)):
     try:
-        clients = db.query(ClientModel).order_by(ClientModel.created_at.desc()).all()
+        # Ordenar por ID descendente ya que no hay created_at
+        clients = db.query(ClientModel).order_by(ClientModel.id_clients.desc()).all()
         return clients
     except Exception as e:
+        print(f"DEBUG ERROR GET: {e}")
         raise HTTPException(status_code=500, detail=f"Error consultando BD: {str(e)}")
 
 @app.post("/clients", response_model=ClientResponse)
@@ -113,7 +116,7 @@ class SendThankYouRequest(BaseModel):
 @app.post("/api/send-thankyou")
 def send_thankyou(payload: SendThankYouRequest, db: Session = Depends(get_db)):
 
-    client = db.query(ClientModel).filter(ClientModel.id == payload.id_clients).first()
+    client = db.query(ClientModel).filter(ClientModel.id_clients == payload.id_clients).first()
     if not client:
         raise HTTPException(status_code=404, detail="Cliente no encontrado")
 

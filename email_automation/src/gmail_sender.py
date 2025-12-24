@@ -10,7 +10,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 
-from src.config import DRY_RUN, GMAIL_SENDER, GOOGLE_CREDENTIALS_PATH, GOOGLE_TOKEN_PATH
+from .config import DRY_RUN, GMAIL_SENDER, GOOGLE_CREDENTIALS_PATH, GOOGLE_TOKEN_PATH
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 

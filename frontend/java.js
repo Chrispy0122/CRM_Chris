@@ -48,6 +48,90 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // --- REUSABLE: Create Card Element ---
+    const createCardElement = (client) => {
+        // Format Date (No created_at in DB, so leaving static or removing)
+        let dateStr = "Recently";
+        // if (client.created_at) {
+        //     const dateObj = new Date(client.created_at);
+        //     dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        // }
+
+        // Unique ID for Upload
+        const uniqueId = 'upload-' + client.id_clients;
+
+        const cardHTML = `
+            <div class="card-header">
+                <h2 class="customer-name">${client.name}</h2>
+            </div>
+            <div class="card-body">
+                <div class="card-content-row">
+                    <div class="card-info">
+                        <div class="info-group">
+                            <span class="label">Phone</span>
+                            <p class="value">${client.phone_number || '-'}</p>
+                        </div>
+                        <div class="info-group">
+                            <span class="label">Email</span>
+                            <p class="value">${client.email || '-'}</p>
+                        </div>
+                        <div class="info-group">
+                            <span class="label">Last Purchase</span>
+                            <p class="value">${client.purchased_item || '-'}</p>
+                            <span class="date">${dateStr}</span>
+                        </div>
+                    </div>
+                    <div class="card-image-upload">
+                            <input type="file" id="${uniqueId}" class="image-input" accept="image/*">
+                            <label for="${uniqueId}" class="upload-label" aria-label="Upload Image">
+                            <span class="plus-icon">+</span>
+                            <img src="" alt="" class="uploaded-image" style="display: none;">
+                            </label>
+                            <button type="button" class="remove-image-btn" style="display: none;" aria-label="Remove Image">&times;</button>
+                    </div>
+                </div>
+                <button class="btn-generate">Generate a Thank You Message</button>
+            </div>
+        `;
+
+        const newCard = document.createElement('article');
+        newCard.className = 'card';
+        // Asignar ID real para que sendThankYou.js funcione
+        newCard.dataset.clientId = client.id_clients;
+        newCard.innerHTML = cardHTML;
+
+        // Bind Image Events
+        bindImageEvents(newCard.querySelector('.card-image-upload'));
+
+        return newCard;
+    };
+
+    // --- API: Load Clients ---
+    const loadClients = async () => {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/clients');
+            if (!response.ok) throw new Error('Failed to load clients');
+
+            const clients = await response.json();
+
+            // Clear existing static cards if needed, or just append
+            grid.innerHTML = ''; // Uncomment to clear hardcoded ones
+
+            clients.forEach(client => {
+                const card = createCardElement(client);
+                grid.insertBefore(card, document.querySelector('.no-results'));
+            });
+
+            runFilters();
+        } catch (error) {
+            console.error('Error loading clients:', error);
+            // alert('Error loading clients from backend');
+        }
+    };
+
+    // Load on start
+    loadClients();
+
     // Open Modal
     addBtn.addEventListener('click', () => {
         modal.classList.add('active');
@@ -78,74 +162,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle Form Submit
-    form.addEventListener('submit', (e) => {
+    // --- API: Create Client (Form Submit) ---
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving...';
+
         // Get Values
         const name = document.getElementById('name').value;
         const phone = document.getElementById('whatsapp').value;
         const item = document.getElementById('item').value;
         const email = document.getElementById('email').value;
 
-        // Format Date (e.g., "Oct 24, 2023")
-        const dateObj = new Date();
-        const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        try {
+            const response = await fetch('http://localhost:8000/clients', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: name,
+                    phone_number: phone,
+                    email: email,
+                    purchased_item: item,
+                    note: ""
+                })
+            });
 
-        // Unique ID for Upload
-        const uniqueId = 'upload-' + Date.now();
+            if (!response.ok) throw new Error('Failed to create client');
 
-        // Create HTML string
-        const cardHTML = `
-            <div class="card-header">
-                <h2 class="customer-name">${name}</h2>
-            </div>
-            <div class="card-body">
-                <div class="card-content-row">
-                    <div class="card-info">
-                        <div class="info-group">
-                            <span class="label">Phone</span>
-                            <p class="value">${phone}</p>
-                        </div>
-                        <div class="info-group">
-                            <span class="label">Email</span>
-                            <p class="value">${email}</p>
-                        </div>
-                        <div class="info-group">
-                            <span class="label">Last Purchase</span>
-                            <p class="value">${item}</p>
-                            <span class="date">${dateStr}</span>
-                        </div>
-                    </div>
-                    <div class="card-image-upload">
-                            <input type="file" id="${uniqueId}" class="image-input" accept="image/*">
-                            <label for="${uniqueId}" class="upload-label" aria-label="Upload Image">
-                            <span class="plus-icon">+</span>
-                            <img src="" alt="" class="uploaded-image" style="display: none;">
-                            </label>
-                            <button type="button" class="remove-image-btn" style="display: none;" aria-label="Remove Image">&times;</button>
-                    </div>
-                </div>
-                <button class="btn-generate">Generate a Thank You Message</button>
-            </div>
-        `;
+            const newClient = await response.json();
 
-        // Create Element
-        const newCard = document.createElement('article');
-        newCard.className = 'card';
-        newCard.innerHTML = cardHTML;
+            // Create and Append Element using the response from DB (with ID)
+            const newCard = createCardElement(newClient);
+            grid.insertBefore(newCard, document.querySelector('.no-results'));
 
-        // Append to Grid (Before the empty state)
-        grid.insertBefore(newCard, document.querySelector('.no-results'));
+            // Close & Reset
+            closeModal();
+            form.reset();
 
-        // Bind Image Events for the new card
-        bindImageEvents(newCard.querySelector('.card-image-upload'));
+            // Run filters
+            runFilters();
 
-        // Close & Reset
-        closeModal();
-        form.reset();
-
-        // Run filters
-        runFilters();
+        } catch (error) {
+            console.error(error);
+            alert('Error creating client: ' + error.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
     });
     // --- SEARCH & FILTER LOGIC ---
     const searchInput = document.querySelector('.search-input');
